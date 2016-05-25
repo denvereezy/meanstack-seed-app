@@ -1,0 +1,1 @@
+# meanstack-seed-app
