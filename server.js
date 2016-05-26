@@ -7,8 +7,7 @@ const express    = require('express'),
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
-app.get('/contactlist', function (req, res) {
-  console.log('I received a GET request');
+app.get('/', function (req, res) {
 
   db.contactlist.find(function (err, docs) {
     console.log(docs);
