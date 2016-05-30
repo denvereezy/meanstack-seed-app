@@ -21,5 +21,14 @@ app.post('/contactlist', function (req, res) {
     res.json(doc);
   });
 });
+
+app.delete('/contactlist/:id', function (req, res) {
+  var id = req.params.id;
+  console.log(id);
+  db.contactlist.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
+    res.json(doc);
+  });
+});
+
 app.listen(3000);
 console.log("Server running on port 3000");
