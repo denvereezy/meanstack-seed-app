@@ -1,34 +1,24 @@
-const express    = require('express'),
-      app        = express(),
-      mongojs    = require('mongojs');
-      db         = mongojs('contactlist', ['contactlist'])
-      bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+const index = require('./routes/index');
+const bodyParser = require('body-parser');
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
+app.get('/contactlist', index.show);
 
-  db.contactlist.find(function (err, docs) {
-    console.log(docs);
-    res.json(docs);
-  });
+app.post('/contactlist', index.add);
+
+app.delete('/contactlist/:id', index.delete);
+
+app.get('/contactlist/:id', index.edit);
+
+app.put('/contactlist/:id', index.update);
+
+const port = process.env.PORT || 3002;
+const server = app.listen(port, function () {
+  const host = server.address().address;
+  const port = server.address().port;
+  console.log('App running on http://%s:%s', host, port);
 });
-
-app.post('/contactlist', function (req, res) {
-  console.log(req.body);
-  db.contactlist.insert(req.body, function(err, doc) {
-    res.json(doc);
-  });
-});
-
-app.delete('/contactlist/:id', function (req, res) {
-  var id = req.params.id;
-  console.log(id);
-  db.contactlist.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
-    res.json(doc);
-  });
-});
-
-app.listen(3000);
-console.log("Server running on port 3000");
